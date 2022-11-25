@@ -50,7 +50,7 @@ public class TextFile {
 			// creates new PrintWriter object for writing file
 			PrintWriter out = new PrintWriter (filename);
                         for (int i = 0; i< iteraciones; i++){
-                            out.printf((int) Math.pow(2, i+3)+"    "+comparaciones[i]+"    "+tiempo[i]+"\n"); 
+                            out.printf((int) Math.pow(2, i+1)+"    "+comparaciones[i]+"    "+tiempo[i]+"\n"); 
                         }
 			System.out.printf("closing file ... ");
 			out.close();	// closes the output stream
