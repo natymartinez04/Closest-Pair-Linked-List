@@ -30,53 +30,47 @@ public class ClosestPair_NataliaMartinez{
         Long comparacionesBrute[] = new Long[16];
         Long comparacionesDivide[] = new Long[16];
         Brute brute = new Brute();
-        ListaEnlazada lista = new ListaEnlazada();
+       
         TextFile text = new TextFile();
         
-        //while (iteraciones < 16){
-            numberC = (long) Math.pow(2, iteraciones+3);
+        while (iteraciones < 16){
+            ListaEnlazada lista = new ListaEnlazada();
+            numberC = (long) Math.pow(2, iteraciones+1);
             System.out.println("Amount of coordinates:"+numberC);
             System.out.println(" ");
             
             lista = GenerateCoordinates(lista,numberC);
-            //lista.printlist(lista);
-            //startSort = System.nanoTime();
-            System.out.println("Original List:");
-            lista.printlist(lista);
-            System.out.println("");
+            startSort = System.nanoTime();
             lista = lista.sortList(lista);
-            System.out.println("Sorted List:");
-            System.out.println("");
-            lista.printlist(lista);
-            //endSort = System.nanoTime();
+            endSort = System.nanoTime();
          
             
-            //tiemposBrute = getTime(coordinates,tiemposBrute,iteraciones,brute,endSort,startSort,false);
-            //comparacionesBrute[iteraciones] = brute.getComparasiones();
-            //brute.setComparaciones(0);
+            tiemposBrute = getTime(lista,tiemposBrute,iteraciones,brute,endSort,startSort,false);
+            comparacionesBrute[iteraciones] = brute.getComparasiones();
+            brute.setComparaciones(0);
             
-            //tiemposDivide = getTime(coordinates,tiemposDivide,iteraciones,brute,endSort,startSort,true);
-            //comparacionesDivide[iteraciones] = brute.getComparasiones();
-            //brute.setComparaciones(0);
+            tiemposDivide = getTime(lista,tiemposDivide,iteraciones,brute,endSort,startSort,true);
+            comparacionesDivide[iteraciones] = brute.getComparasiones();
+            brute.setComparaciones(0);
             
-            //coordinates.removeAll(coordinates);
-            //iteraciones++;
-        //}
+            iteraciones++;
+        }
         
-        //text.writeTime("dataBruteForce.txt",tiemposBrute,iteraciones,comparacionesBrute);
-        //text.writeTime("dataDivideAndConquer.txt",tiemposDivide,iteraciones,comparacionesDivide);
+        text.writeTime("dataBruteForce.txt",tiemposBrute,iteraciones,comparacionesBrute);
+        text.writeTime("dataDivideAndConquer.txt",tiemposDivide,iteraciones,comparacionesDivide);
 
         
     }
+
     
     //Method that stores time execution for both cases
-    public static Long[] getTime(ArrayList<Coordinate> coordinates,Long[] tiempos,int iteraciones,Brute brute,long endSort,long startSort,boolean sw){
+    public static Long[] getTime(ListaEnlazada lista,Long[] tiempos,int iteraciones,Brute brute,long endSort,long startSort,boolean sw){
         long start,end;
         double dmin;
         if (sw == false){
             System.out.println("By brute force: ");
             start = System.nanoTime();
-            dmin = brute.bruteForce(coordinates, 100000000);
+            dmin = brute.bruteForce(lista, 100000000);
             end = System.nanoTime();
             tiempos[iteraciones] = end-start + endSort-startSort; 
             Pairs pair = findPair(brute,dmin);
@@ -90,7 +84,7 @@ public class ClosestPair_NataliaMartinez{
         }else{
             System.out.println("Divide and Conquer: ");
             start = System.nanoTime();
-            dmin = brute.closestRecursive(coordinates,10000000);
+            dmin = brute.closestRecursive(lista,10000000);
             end = System.nanoTime();
             tiempos[iteraciones] = end-start + endSort-startSort;
             Pairs pair = findPair(brute,dmin);
@@ -124,12 +118,14 @@ public class ClosestPair_NataliaMartinez{
         int y;
         Random random = new Random();
         for (int i = 0; i<numberC;i++){
-            x = random.nextInt(10);
-            y = random.nextInt(10);
+            x = random.nextInt((int) Math.pow(5, i));
+            y = random.nextInt(500);
             lista.Agregar(new Coordinate(Integer.toString(i),x,y)); 
         } 
         return lista;
     } 
+
+}   
 
 }   
 
