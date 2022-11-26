@@ -34,50 +34,53 @@ public class Brute {
     
     
     //Brute force function: Finds the minimun distance between
-    public double bruteForce(ArrayList<Coordinate> coordinates,double dmin){ 
-        int n = coordinates.size();
-        for (int i = 0; i<n;i++){
-           for (int j = 0; j<n;j++){
-               if (i!=j){
-                  if (distance(coordinates.get(i), coordinates.get(j))<=dmin){
-                    dmin = distance(coordinates.get(i), coordinates.get(j));
-                    pairs.add(new Pairs(coordinates.get(i),coordinates.get(j),dmin));
-                    
-                  }
-               } 
-               comparaciones++;
-            } 
-        }
-        
+    public double bruteForce(ListaEnlazada lista,double dmin){ 
+        Coordinate temp;
+        if (lista.ptr != null){ 
+            if (lista.ptr.link != null){
+                NodoC p = lista.ptr;
+                NodoC c = lista.ptr.link;
+                while (c != null){
+                    if (distance(p.coordinate,c.coordinate)<=dmin){
+                        dmin = distance(p.coordinate, c.coordinate);
+                        pairs.add(new Pairs(p.coordinate,c.coordinate,dmin));
+                    }
+                    p = c;
+                    c = c.link;
+                        
+                }
+            }
+            
+        }     
         return dmin;
     }
     
    
     //Divide and Conquer function: Recursively finds the minimun distance between two points
-    public double closestRecursive(ArrayList<Coordinate> coordinates,double dmin){
-        int n = coordinates.size();
+    public double closestRecursive(ListaEnlazada lista,double dmin){
+        int n = lista.getTam();
         comparaciones++;
         if (n<=3){
-            return bruteForce(coordinates,dmin);
+            return bruteForce(lista,dmin);
         }else{
             int mid = n/2;
-            Coordinate Cmid = (Coordinate) coordinates.get(mid);
-            double dl = closestRecursive(subArray(coordinates,0,mid),dmin);
-            double dr = closestRecursive(subArray(coordinates,mid,n),dmin);    
+            NodoC Cmid = lista.getCoordinate(lista, mid);
+            double dl = closestRecursive(subList(lista,0,mid),dmin);
+            double dr = closestRecursive(subList(lista,mid,n),dmin);    
             dmin = Math.min(dl,dr);
-            ArrayList<Coordinate> strip = new ArrayList<>();
-            coordinates = Strip(strip,coordinates,Cmid,0,dmin);
+            ListaEnlazada strip = new ListaEnlazada();
+            lista = Strip(strip,lista,Cmid.getCoordinate(),0,dmin);
         }
         
-        return bruteForce(coordinates,dmin); 
+        return bruteForce(lista,dmin); 
     }
 
     
     //Function that adds to a new array the coordinates that have a distance smaller than the minimun distance found to the mid coordinate
-    public ArrayList<Coordinate> Strip(ArrayList<Coordinate> strip,ArrayList<Coordinate> coordinates,Coordinate Cmid,int i,double dmin){
-       while (i<coordinates.size()){
-            if (Math.abs(coordinates.get(i).getX() - Cmid.getX()) < dmin) {
-                strip.add((Coordinate) coordinates.get(i));
+    public ListaEnlazada Strip(ListaEnlazada strip,ListaEnlazada lista,Coordinate Cmid,int i,double dmin){
+       while (i<lista.getTam()){
+            if (Math.abs(lista.getCoordinate(lista, i).getCoordinate().getX() - Cmid.getX()) < dmin) {
+                strip.Agregar(lista.getCoordinate(lista, i).getCoordinate());
             }
             i++;
         }
@@ -85,14 +88,14 @@ public class Brute {
     }
     
     
-    public ArrayList<Coordinate> subArray(ArrayList<Coordinate> coordinates, int start, int end){
-        ArrayList<Coordinate> coordinatesX = new ArrayList<>();
-        int j = 0;
+    public ListaEnlazada subList(ListaEnlazada lista, int start, int end){
+        ListaEnlazada subList = new ListaEnlazada();
+        NodoC p = lista.getCoordinate(lista, start);
         for (int i = start; i<end; i++){
-            coordinatesX.add(j, (Coordinate) coordinates.get(i));
-            j++;
+            subList.Agregar(p.getCoordinate());
+            p = p.link;
         }
-        return coordinatesX;    
+        return subList;    
     }
     
     //Calculates distance between two coordinates

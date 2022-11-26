@@ -35,7 +35,15 @@ public class ListaEnlazada {
         }
         tam++;
     }
-    
+    public NodoC getCoordinate(ListaEnlazada lista,int index){
+        NodoC p = lista.ptr;
+        int i = 0;
+        while(p != null && i!=index){
+            p = p.link;
+            i++;
+        }
+        return p;
+    }
     public void printlist(ListaEnlazada lista){
         NodoC p = lista.ptr;
         while (p.link != null){
@@ -47,7 +55,7 @@ public class ListaEnlazada {
     public ListaEnlazada sortList(ListaEnlazada lista){
         Coordinate temp;
         if (lista.ptr != null){ 
-            if (ptr.link != null){
+            if (lista.ptr.link != null){
                 NodoC p = lista.ptr;
                 NodoC c = lista.ptr.link;
                 while (c != null){
@@ -77,19 +85,6 @@ public class ListaEnlazada {
         return tam;
     }
     
-   
-    
-    
-        
-        
-        
-    
-    
-
-   
-    
-    
-    
-
     
 }
+
