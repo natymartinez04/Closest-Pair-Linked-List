@@ -33,7 +33,7 @@ public class ClosestPair_NataliaMartinez{
        
         TextFile text = new TextFile();
         
-        while (iteraciones < 16){
+        while (iteraciones < 14){
             ListaEnlazada lista = new ListaEnlazada();
             numberC = (long) Math.pow(2, iteraciones+1);
             System.out.println("Amount of coordinates:"+numberC);
@@ -41,13 +41,15 @@ public class ClosestPair_NataliaMartinez{
             
             lista = GenerateCoordinates(lista,numberC);
             startSort = System.nanoTime();
-            lista = lista.sortList(lista);
+            lista = lista.sortList(lista,brute);
             endSort = System.nanoTime();
-         
+  
+            int comparacionesSort = (int) brute.getComparasiones();
+            System.out.println("compa: "+comparacionesSort);
             
             tiemposBrute = getTime(lista,tiemposBrute,iteraciones,brute,endSort,startSort,false);
             comparacionesBrute[iteraciones] = brute.getComparasiones();
-            brute.setComparaciones(0);
+            brute.setComparaciones(comparacionesSort);
             
             tiemposDivide = getTime(lista,tiemposDivide,iteraciones,brute,endSort,startSort,true);
             comparacionesDivide[iteraciones] = brute.getComparasiones();
@@ -126,10 +128,5 @@ public class ClosestPair_NataliaMartinez{
     } 
 
 }   
-
-}   
-
-
-
 
 
