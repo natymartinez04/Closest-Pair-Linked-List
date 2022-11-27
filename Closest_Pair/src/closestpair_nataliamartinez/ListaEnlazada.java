@@ -22,6 +22,7 @@ public class ListaEnlazada {
         this.tam = 0;
     }
     
+    //Add Coordinate to list
     public void Agregar(Coordinate coordinate){
         if (ptr == null){
             ptr = new NodoC(coordinate);
@@ -35,6 +36,8 @@ public class ListaEnlazada {
         }
         tam++;
     }
+    
+    //Returns coordinate wanted
     public NodoC getCoordinate(ListaEnlazada lista,int index){
         NodoC p = lista.ptr;
         int i = 0;
@@ -46,13 +49,14 @@ public class ListaEnlazada {
     }
     public void printlist(ListaEnlazada lista){
         NodoC p = lista.ptr;
-        while (p.link != null){
+        while (p != null){
             System.out.println("x: "+p.coordinate.getX()+" y: "+p.coordinate.getY());
             p = p.link;
         }
     }
     
-    public ListaEnlazada sortList(ListaEnlazada lista){
+    //Sorts list (depending on x value, in ascending order) using bubble sort
+    public ListaEnlazada sortList(ListaEnlazada lista,Brute brute){
         Coordinate temp;
         if (lista.ptr != null){ 
             if (lista.ptr.link != null){
@@ -74,6 +78,7 @@ public class ListaEnlazada {
                         p = c;
                         c = c.link;
                     }
+                    brute.setComparaciones(brute.comparaciones + 1);
                 }
             }
             
@@ -87,4 +92,5 @@ public class ListaEnlazada {
     
     
 }
+
 
