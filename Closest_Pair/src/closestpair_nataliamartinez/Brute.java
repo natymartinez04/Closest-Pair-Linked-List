@@ -39,16 +39,22 @@ public class Brute {
         if (lista.ptr != null){ 
             if (lista.ptr.link != null){
                 NodoC p = lista.ptr;
-                NodoC c = lista.ptr.link;
-                while (c != null){
-                    if (distance(p.coordinate,c.coordinate)<=dmin){
-                        dmin = distance(p.coordinate, c.coordinate);
-                        pairs.add(new Pairs(p.coordinate,c.coordinate,dmin));
-                    }
-                    p = c;
-                    c = c.link;
-                        
+                NodoC c = lista.ptr;
+                while (p != null){
+                    while (c != null){
+                        if (!p.coordinate.equals(c.coordinate)){
+                             if (distance(p.coordinate,c.coordinate)<=dmin){
+                                dmin = distance(p.coordinate, c.coordinate);
+                                pairs.add(new Pairs(p.coordinate,c.coordinate,dmin));
+                             }
+                        }
+                        c = c.link;
+                        comparaciones++;   
+                    } 
+                    p = p.link;
+                    c = lista.ptr;
                 }
+                
             }
             
         }     
@@ -68,26 +74,29 @@ public class Brute {
             double dl = closestRecursive(subList(lista,0,mid),dmin);
             double dr = closestRecursive(subList(lista,mid,n),dmin);    
             dmin = Math.min(dl,dr);
-            ListaEnlazada strip = new ListaEnlazada();
-            lista = Strip(strip,lista,Cmid.getCoordinate(),0,dmin);
+            lista = Strip(lista,Cmid.getCoordinate(),0,dmin);
+            return bruteForce(lista,dmin); 
         }
+   
         
-        return bruteForce(lista,dmin); 
     }
 
     
-    //Function that adds to a new array the coordinates that have a distance smaller than the minimun distance found to the mid coordinate
-    public ListaEnlazada Strip(ListaEnlazada strip,ListaEnlazada lista,Coordinate Cmid,int i,double dmin){
-       while (i<lista.getTam()){
+    //Function that adds to a new list the coordinates that have a distance smaller than the minimun distance found to the mid coordinate
+    public ListaEnlazada Strip(ListaEnlazada lista,Coordinate Cmid,int i,double dmin){
+        ListaEnlazada strip = new ListaEnlazada();
+        while (i<lista.getTam()){
             if (Math.abs(lista.getCoordinate(lista, i).getCoordinate().getX() - Cmid.getX()) < dmin) {
                 strip.Agregar(lista.getCoordinate(lista, i).getCoordinate());
             }
             i++;
+         
+
         }
         return strip;
     }
     
-    
+    //Generates a sublist from one index to another
     public ListaEnlazada subList(ListaEnlazada lista, int start, int end){
         ListaEnlazada subList = new ListaEnlazada();
         NodoC p = lista.getCoordinate(lista, start);
@@ -95,6 +104,7 @@ public class Brute {
             subList.Agregar(p.getCoordinate());
             p = p.link;
         }
+        
         return subList;    
     }
     
